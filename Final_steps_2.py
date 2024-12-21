@@ -37,7 +37,7 @@ for filename in os.listdir(input_directory):
         b = average_brightness(t)
 
         # Run Real-ESRGAN for initial enhancement
-        os.system(f"{path}realesrgan-ncnn-vulkan.exe -i {image_path} -o {output_directory}{b}_clear.png -n realesrgan-x4plus")
+        os.system(f"{path}realesrgan-ncnn-vulkan.exe -i {image_path} -o {output_directory}{filename}_best_clear.png -n realesrgan-x4plus")
 
         t = t * 255
         #cv2.imwrite(f"{output_directory}{b}_original.jpg", t)
@@ -57,12 +57,12 @@ for filename in os.listdir(input_directory):
             print(f"Processing {filename}: Brightness = {b}")
 
             # Only save images where brightness is between 0.2 and 0.3
-            if 0.2 <= b <= 0.3:
-                image_output_path = f"{output_directory}{filename}_{b:.2f}.png"
+            if 0.2 <= b <= 0.4:
+                image_output_path = f"{output_directory}{filename}_best_clear.png"
                 image_to_save = im * 255
                 cv2.imwrite(image_output_path, image_to_save)
 
-                os.system(f"{path}realesrgan-ncnn-vulkan.exe -i {image_output_path} -o {output_directory}{filename}_{b}_clear.png -n realesrgan-x4plus")
+                os.system(f"{path}realesrgan-ncnn-vulkan.exe -i {image_output_path} -o {output_directory}{filename}_best_clear.png -n realesrgan-x4plus")
 
             # Update the image for further processing in the loop
             image = im * 255

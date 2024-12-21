@@ -1,51 +1,59 @@
-import google.generativeai as genai
-import os
-import time
-import PIL.Image
-import cv2
+from PIL import Image
 import numpy as np
-# Configuration and setup
-genai.configure(api_key='AIzaSyAvyiK4rsV3C_KQUJEXJnSEL2qhtOBhGmY') # Replace with your actual API key
-model = genai.GenerativeModel("gemini-1.5-flash")
-path_sample = "C:/Users/rayso/Desktop/python/evertings_for_final/images_correction" # Use raw string to handle backslashes
-files = os.listdir(path_sample)
-# Prepare the prompt template
-sample_txt ="""
-What is this?
-answer_format(not too long limted 30 words): ***fish_name***
-"""
+import cv2
+import os
+
+# Directories for input and output images
+input_directory = "C:/Users/rayso/Desktop/python/evertings_for_final/file_saving/"  # Folder with input images
+output_directory = "C:/Users/rayso/Desktop/python/evertings_for_final/images_correction/"
+
+files1 = os.listdir(input_directory)
+files2 = os.listdir(output_directory)
+
+# Iterate through all image files in the input directory
+for i in range(len(files1)):
+    # Load the first image using PIL
+    image_path1 = input_directory + files1[i]
+    image1 = Image.open(image_path1)
+    image1 = np.array(image1)  # Convert to numpy array (RGB format by default)
+    image1 = cv2.cvtColor(image1, cv2.COLOR_RGB2BGR)  # Convert RGB to BGR
+
+    # Load the second image using PIL
+    image_path2 = output_directory + files2[i]
+    image2 = Image.open(image_path2)
+    image2 = np.array(image2)  # Convert to numpy array (RGB format by default)
+    image2 = cv2.cvtColor(image2, cv2.COLOR_RGB2BGR)  # Convert RGB to BGR
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    font_scale = 0.5  # Adjust the font size
+    thickness = 1  # Thickness of the text
+    line_type = cv2.LINE_AA
+    resized_image1 = cv2.resize(image1, (image2.shape[1], image2.shape[0]))
+    # Add "Before" text on the left side (first image)
+    before_text = "Before"
+    before_position = (10, 50)  # Position on the left side
+    before_color = (0, 0, 255)  # Blue text in BGR
+    cv2.putText(resized_image1, before_text, before_position, font, font_scale, before_color, thickness, line_type)
+
+    # Add "After" text on the right side (second image)
+    after_text = "After"
+    after_position = (10, 50)  # Position on the right side
+    after_color = (0, 255, 0)  # Green text in BGR
+    cv2.putText(image2, after_text, after_position, font, font_scale, after_color, thickness, line_type)
+    # Resize image1 to match the dimensions of image2
 
 
-# Process each image
-for filename in files:
-    path = os.path.join(path_sample, filename)
-    print(path)
-    img = PIL.Image.open(path)
-    response = model.generate_content([img, sample_txt])
-    file_data_string = response.text
-    print(file_data_string)
-    import re
-    text = file_data_string
-    num = 0
-    for i in range(len(text)):
-        if text[i] == "*":
-            num = i
-            break
-    a = text[i:-1]
-    a = a.replace("*", "")
-    a = a.replace(" ", "_")
-    print(a)
-    base_path = "C:/Users/rayso/Desktop/python/evertings_for_final/video_detail_information"
-    folder_name = a
-    print(folder_name)
-    folder_path = os.path.join(base_path, folder_name)
-    base_path+="/"+str(folder_name)
+    # Combine the images horizontally (side-by-side)
+    combined_image = np.hstack((resized_image1, image2))
 
-    os.makedirs(folder_path, exist_ok=True)  # `exist_ok=True` avoids errors if the folder already exists
-    print(f"Folder '{folder_name}' created successfully at: {folder_path}")
-    files_1 = os.listdir(base_path)
-    number1=len(files_1)+1
-    file_name1=base_path+"/"+str(folder_name)+str(number1)+".png"
-    img.save(file_name1)
+    # Text properties
 
-    time.sleep(4)
+    # Display the combined image
+    cv2.imshow("Combined Image", combined_image)
+    cv2.waitKey(0)  # Wait for a key press to move to the next image
+
+    # Optionally, save the combined image
+    save_path = f"C:/Users/rayso/Desktop/python/evertings_for_final/combined_image_{i}.png"
+    cv2.imwrite(save_path, combined_image)
+
+# Close all OpenCV windows
+cv2.destroyAllWindows()

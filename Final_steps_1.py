@@ -27,7 +27,7 @@ while cap.isOpened():
     if success:
         # Run YOLO11 tracking on the frame, persisting tracks between frames
         results = model.track(frame, persist=True)
-
+        frame_cap = frame.copy()
         # Get the boxes and track IDs
         boxes = results[0].boxes.xywh.cpu()
         track_ids = results[0].boxes.id.int().cpu().tolist()
@@ -42,11 +42,16 @@ while cap.isOpened():
             #print(x, y, w, h)
             x1, y1, x2, y2 = x-w//2,y-h//2,x+w//2,y+h//2
             x1, y1, x2, y2 = int(x1.item()), int(y1.item()), int(x2.item()), int(y2.item())
-            if conf<0.5: continue
+            if conf<0.7: continue
             font = cv2.FONT_HERSHEY_SIMPLEX
             font_scale = 0.5
             thickness = 1
             label_text = f"fish {conf:.2f}"
+            cropped_image = frame_cap[y1:y2, x1:x2]  # Crop the region of the detected object
+            if cropped_image.size != 0:  # Ensure the cropped region is valid
+                cropped_path = os.path.join(output_dir, f"cropped_{track_id}.jpg")
+                cv2.imwrite(cropped_path, cropped_image)
+                cropped_count += 1
             text_size = cv2.getTextSize(label_text, font, font_scale, thickness)[0]
             cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 0, 0), 2)
             # Create a filled rectangle for the label background
@@ -56,11 +61,7 @@ while cap.isOpened():
             # print("Percentage:", conf)
             # print(cls, i.names[cls])
             # Draw the bounding box on the frame
-            cropped_image = frame[y1:y2, x1:x2]  # Crop the region of the detected object
-            if cropped_image.size != 0:  # Ensure the cropped region is valid
-                cropped_path = os.path.join(output_dir, f"cropped_{track_id}.jpg")
-                cv2.imwrite(cropped_path, cropped_image)
-                cropped_count += 1
+
             track = track_history[track_id]
 
             track.append((float(x), float(y)))  # x, y center point
