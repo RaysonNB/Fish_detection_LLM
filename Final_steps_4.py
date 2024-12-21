@@ -11,7 +11,7 @@ path_sample = "C:/Users/rayso/Desktop/python/evertings_for_final/images_correcti
 files = os.listdir(path_sample)
 # Prepare the prompt template
 sample_txt ="""
-What is this?
+What is this(just give me the name is enough, no extra description)?
 answer_format(not too long limted 30 words): ***fish_name***
 """
 
