@@ -68,11 +68,5 @@ for filename in os.listdir(input_directory):
             image = im * 255
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-            # Display the intermediate image
-            cv2.imshow("Intermediate Image", im)  # Show the image
-            key = cv2.waitKey(1)  # Wait for 1ms (use a larger value if needed to observe the image)
-            if key == ord('q'):  # Allow the user to quit the loop by pressing 'q'
-                break
-
         # Destroy OpenCV window after processing the image
         cv2.destroyAllWindows()

@@ -4,6 +4,7 @@ import time
 import PIL.Image
 import cv2
 import numpy as np
+from PIL import Image
 # Configuration and setup
 genai.configure(api_key='AIzaSyAvyiK4rsV3C_KQUJEXJnSEL2qhtOBhGmY') # Replace with your actual API key
 model = genai.GenerativeModel("gemini-1.5-flash")
@@ -35,6 +36,21 @@ for filename in files:
     a = a.replace("*", "")
     a = a.replace(" ", "_")
     print(a)
+
+
+    image = np.array(img).copy()
+    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+    text = a
+    position = (10, 20)  # Position on the right side
+    color = (0, 255, 0)  # Green text in BGR
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    font_scale = 0.55  # Adjust the font size
+    thickness = 2  # Thickness of the text
+    line_type = cv2.LINE_AA
+    cv2.putText(image, text, position, font, font_scale, color, thickness, line_type)
+    cv2.imshow("Combined Image", image)
+    cv2.waitKey(0)
+
     base_path = "C:/Users/rayso/Desktop/python/evertings_for_final/video_detail_information"
     folder_name = a
     print(folder_name)

@@ -5,10 +5,10 @@ import numpy as np
 from ultralytics import YOLO
 
 # Load the YOLO model
-model = YOLO("new_final.pt")
+model = YOLO("video3.pt")
 
 # Open the video file
-video_path = r"C:\Users\rayso\Desktop\python\niggaaaaa.mp4"
+video_path = r"C:\Users\rayso\Downloads\127713-739309133_medium.mp4"
 cap = cv2.VideoCapture(video_path)
 
 # Store the track history
@@ -25,7 +25,8 @@ while cap.isOpened():
         break
 
     frame = cv2.resize(frame, (desired_width, desired_height))
-
+    h, w, c = frame.shape
+    frame = cv2.resize(frame, (int(w * 0.75), int(h * 0.75)))
     try:
         results = model.track(frame, persist=True)
         frame_cap = frame.copy()
@@ -42,11 +43,12 @@ while cap.isOpened():
 
             # Crop the region of the detected object
             cropped_image = frame_cap[y1:y2, x1:x2]
-            if cropped_image.size != 0 and conf>=0.6:
-                cropped_path = os.path.join(output_dir, f"cropped_{track_id}.jpg")
+            h1,w1,c1=cropped_image.shape
+            if cropped_image.size != 0 and conf>=0.4 and h1<=w1:
+                cropped_path = os.path.join(output_dir, f"cropped_fish(id)_{track_id}.jpg")
                 cv2.imwrite(cropped_path, cropped_image)
                 cropped_count += 1
-
+            #if conf<=0.3: continue
             # Draw bounding box and label
             label_text = f"fish, id:{track_id}, conf:{conf:.2f}"
             text_size = cv2.getTextSize(label_text, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)[0]

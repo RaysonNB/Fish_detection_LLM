@@ -11,7 +11,7 @@ files1 = os.listdir(input_directory)
 files2 = os.listdir(output_directory)
 
 # Iterate through all image files in the input directory
-for i in range(len(files1)):
+for i in range(len(files2)):
     # Load the first image using PIL
     image_path1 = input_directory + files1[i]
     image1 = Image.open(image_path1)
