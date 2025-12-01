@@ -22,7 +22,7 @@ for i in list_a:
         path=gggg+"/"+str(j)
 
         print(path)
-        genai.configure(api_key='AIzaSyAagkj3QC_Zt_uO7UYW_NASMCpHc8VnNxw')
+        genai.configure(api_key='GOOGLE_API')
         model = genai.GenerativeModel("gemini-1.5-flash")
         #response = model.generate_content("這是什麼魚")
         img = PIL.Image.open(path)
@@ -80,3 +80,4 @@ print("T",list_T)
 print("AB",list_AB)
 print("HY",list_HY)
 print("CA ",list_CA)
+
