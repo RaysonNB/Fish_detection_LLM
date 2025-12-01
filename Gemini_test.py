@@ -4,7 +4,7 @@ import time
 import PIL.Image
 import cv2
 # Configuration and setup
-genai.configure(api_key='AIzaSyAagkj3QC_Zt_uO7UYW_NASMCpHc8VnNxw') # Replace with your actual API key
+genai.configure(api_key='GOOGLE_API') # Replace with your actual API key
 model = genai.GenerativeModel("gemini-1.5-flash")
 path_sample = r"C:\Users\rayso\Desktop\python\evertings_for_final\images_correction" # Use raw string to handle backslashes
 files = os.listdir(path_sample)
@@ -36,4 +36,5 @@ for filename in files:
     print(f"Folder '{folder_name}' created successfully at: {folder_path}")
 
     cv2.imwrite(base_path, img)
+
     time.sleep(4)
