@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 from PIL import Image
 # Configuration and setup
-genai.configure(api_key='AIzaSyAvyiK4rsV3C_KQUJEXJnSEL2qhtOBhGmY') # Replace with your actual API key
+genai.configure(api_key='GOOGLE_API') # Replace with your actual API key
 model = genai.GenerativeModel("gemini-1.5-flash")
 path_sample = "C:/Users/rayso/Desktop/python/evertings_for_final/images_correction" # Use raw string to handle backslashes
 files = os.listdir(path_sample)
@@ -63,5 +63,6 @@ for filename in files:
     number1=len(files_1)+1
     file_name1=base_path+"/"+str(folder_name)+str(number1)+".png"
     img.save(file_name1)
+
 
     time.sleep(4)
