@@ -3,7 +3,7 @@ import os
 import time
 import PIL.Image
 #version 1
-genai.configure(api_key='AIzaSyAagkj3QC_Zt_uO7UYW_NASMCpHc8VnNxw')
+genai.configure(api_key='GOOGLE_API')
 model = genai.GenerativeModel("gemini-1.5-flash")
 #response = model.generate_content("這是什麼魚")
 file_name=["鯿魚(Abramis brama)","金山鰂(Tilapia)","鯪魚(Cyprinidae)","鯽魚(Carassius auratus)","鱅魚(Hypophthalmichthys)"]
